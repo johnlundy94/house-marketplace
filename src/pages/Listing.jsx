@@ -30,7 +30,58 @@ function Listing() {
     fetchListing();
   }, [navigate, params.listingId]);
 
-  return <div>Listing</div>;
+  if (loading) {
+    return <Spinner />;
+  }
+
+  return (
+    <main>
+      <div
+        className="shareIconDiv"
+        onClick={() => {
+          navigator.clipboard.writeText(window.location.href);
+          setShareLinkCopied(true);
+          setTimeout(() => {
+            setShareLinkCopied(false);
+          }, 2000);
+        }}
+      >
+        <img src={shareIcon} alt="" />
+      </div>
+
+      {shareLinkCopied && <p className="linkCopied">Link Copied</p>}
+      <div className="listingDetails">
+        <p className="listingName">
+          {listing.name} - ${" "}
+          {listing.offer
+            ? listing.discountedPrice
+                .toString()
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            : listing.RegularPrice.toString().replace(
+                /\B(?=(\d{3})+(?!\d))/g,
+                ","
+              )}
+        </p>
+        <p className="listingLocation">{listing.location}</p>
+        <p className="listingType">
+          For {listing.type === "rent" ? "Rent" : "Sale"}
+        </p>
+        {listing.offer && (
+          <p className="discountPrice">
+            ${listing.regularPrice - listing.discountedPrice} discount
+          </p>
+        )}
+
+        <ul className="listingDetailsList">
+          <li>
+            {listing.bedrooms > 1
+              ? `${listing.bedrooms} Bedrooms`
+              : "1 Bedroom"}
+          </li>
+        </ul>
+      </div>
+    </main>
+  );
 }
 
 export default Listing;

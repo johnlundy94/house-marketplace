@@ -78,7 +78,25 @@ function Listing() {
               ? `${listing.bedrooms} Bedrooms`
               : "1 Bedroom"}
           </li>
+          <li>
+            {listing.bathrooms > 1
+              ? `${listing.bathrooms} Bathrooms`
+              : "1 Bathroom"}
+          </li>
+          <li>{listing.parking && "Parking spot"}</li>
+          <li>{listing.furnished && "Furnished"}</li>
         </ul>
+
+        <p className="listingLocationTitle">Location</p>
+
+        {auth.currentUser?.uid !== listing.userRef && (
+          <Link
+            to={`/contact/${listing.userRef}?listingName=${listing.name}&listingLocation=${listing.location}`}
+            className="primaryButton"
+          >
+            Contact Landlord
+          </Link>
+        )}
       </div>
     </main>
   );

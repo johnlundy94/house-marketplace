@@ -57,7 +57,13 @@ function Slider() {
                   backgroundSize: "cover",
                 }}
                 className="swiperSlideDiv"
-              ></div>
+              >
+                <p className="swiperSlideText">{data.name}</p>
+                <p className="=swiperSlidePrice">
+                  ${data.discountedPrice ?? data.regularPrice}{" "}
+                  {data.type === "rent" && "/ month"}
+                </p>
+              </div>
             </SwiperSlide>
           ))}
         </Swiper>

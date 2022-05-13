@@ -3,12 +3,13 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import SwiperCore, { Navigation, Pagination, Scrollbar, A11y } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
+import "swiper/swiper-bundle.css";
 import { getDoc, doc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { db } from "../firebase.config";
 import Spinner from "../components/Spinner";
 import shareIcon from "../assets/svg/shareIcon.svg";
+SwiperCore.use([Navigation, Pagination, Scrollbar, A11y]);
 
 function Listing() {
   const [listing, setListing] = useState(null);
@@ -66,18 +67,18 @@ function Listing() {
         <img src={shareIcon} alt="" />
       </div>
 
-      {shareLinkCopied && <p className="linkCopied">Link Copied</p>}
+      {shareLinkCopied && <p className="linkCopied">Link Copied!</p>}
+
       <div className="listingDetails">
         <p className="listingName">
-          {listing.name} - ${" "}
+          {listing.name} - $
           {listing.offer
             ? listing.discountedPrice
                 .toString()
                 .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-            : listing.RegularPrice.toString().replace(
-                /\B(?=(\d{3})+(?!\d))/g,
-                ","
-              )}
+            : listing.regularPrice
+                .toString()
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
         </p>
         <p className="listingLocation">{listing.location}</p>
         <p className="listingType">
@@ -100,7 +101,7 @@ function Listing() {
               ? `${listing.bathrooms} Bathrooms`
               : "1 Bathroom"}
           </li>
-          <li>{listing.parking && "Parking spot"}</li>
+          <li>{listing.parking && "Parking Spot"}</li>
           <li>{listing.furnished && "Furnished"}</li>
         </ul>
 
@@ -117,6 +118,7 @@ function Listing() {
               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png"
             />
+
             <Marker
               position={[listing.geolocation.lat, listing.geolocation.lng]}
             >

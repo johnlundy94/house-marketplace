@@ -205,7 +205,7 @@ function EditListing() {
     !formDataCopy.offer && delete formDataCopy.discountedPrice;
 
     //Update Listing
-    const docRef = doc(db, "listins", params.listingId);
+    const docRef = doc(db, "listings", params.listingId);
     await updateDoc(docRef, formDataCopy);
     setLoading(false);
     toast.success("Listing saved");
